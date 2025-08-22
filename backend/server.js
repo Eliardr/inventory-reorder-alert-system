@@ -12,7 +12,7 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/tasks', require('./routes/taskRoutes'));
 app.use('/api/categories', require('./routes/categoryRoutes'));
-
+app.use('/api/products', require('./routes/productRoutes'));
 // Export the app object for testing
 if (require.main === module) {
     connectDB();
