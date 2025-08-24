@@ -1,17 +1,57 @@
-// src/pages/inventory/CategoryManager.jsx
-const CategoryManager = () => {
+// frontend/src/pages/inventory/CategoryManager.jsx
+import { useEffect, useState } from 'react';
+import axiosInstance from '../../axiosConfig';
+
+import CategoryForm from '../../components/CategoryForm';
+import CategoryList from '../../components/CategoryList';
+
+export default function CategoryManager() {
+  const [categories, setCategories] = useState([]);
+  const [editingCategory, setEditingCategory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState('');
+
+  // Load categories on mount
+  useEffect(() => {
+    let alive = true;
+    (async () => {
+      try {
+        const res = await axiosInstance.get('/api/categories'); // token added by interceptor
+        if (!alive) return;
+        const data = Array.isArray(res.data) ? res.data : [];
+        setCategories(data);
+      } catch (e) {
+        const msg = e?.response?.data?.message || e.message || 'Failed to fetch categories';
+        setErr(msg);
+      } finally {
+        if (alive) setLoading(false);
+      }
+    })();
+    return () => { alive = false; };
+  }, []);
+
+  if (loading) return <div className="p-4">Loading categories…</div>;
+
   return (
-    <div>
-      <h2>Categories Management</h2>
-      <p>Category CRUD operations will go here</p>
-      <div style={{padding: '20px', border: '1px solid #ccc', marginTop: '20px'}}>
-        <h3>Add New Category</h3>
-        <input type="text" placeholder="Category Name" style={{marginRight: '10px', padding: '5px'}}/>
-        <input type="text" placeholder="Description" style={{marginRight: '10px', padding: '5px'}}/>
-        <button style={{padding: '5px 10px'}}>Add Category</button>
-      </div>
+    <div className="container mx-auto p-6">
+      {err ? (
+        <div className="mb-4 p-3 rounded bg-red-50 text-red-700">
+          Error: {err}
+        </div>
+      ) : null}
+
+      <CategoryForm
+        categories={categories}
+        setCategories={setCategories}
+        editingCategory={editingCategory}
+        setEditingCategory={setEditingCategory}
+      />
+
+      <CategoryList
+        categories={categories}
+        setCategories={setCategories}
+        setEditingCategory={setEditingCategory}
+      />
     </div>
   );
-};
-
-export default CategoryManager;
+}

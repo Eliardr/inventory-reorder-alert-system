@@ -1,13 +1,14 @@
-// config/db.js
+// backend/config/db.js
 const mongoose = require("mongoose");
 
-// Set strictQuery explicitly to suppress the warning
-//mongoose.set('strictQuery', true);
+// Optional: silence the Mongoose v7 strictQuery warning
+mongoose.set('strictQuery', true);
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);  // Remove deprecated options
-    console.log("MongoDB connected successfully");
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    // This shows host and the actual database name Mongoose is using
+    console.log(`MongoDB connected: ${conn.connection.host}/${conn.connection.name}`);
   } catch (error) {
     console.error("MongoDB connection error:", error.message);
     process.exit(1);

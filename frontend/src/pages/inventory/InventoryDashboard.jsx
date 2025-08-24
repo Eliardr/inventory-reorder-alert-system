@@ -3,47 +3,48 @@ import { useState } from 'react';
 import CategoryManager from './CategoryManager';
 import ProductManager from './ProductManager';
 
-const InventoryDashboard = () => {
+export default function InventoryDashboard() {
   const [activeTab, setActiveTab] = useState('categories');
 
+  const baseTab =
+    'px-5 py-2 rounded-full text-sm font-medium transition border';
+  const active =
+    'bg-blue-600 text-white border-blue-600 shadow';
+  const inactive =
+    'bg-white text-gray-700 border-gray-300 hover:bg-gray-50';
+
   return (
-    <div className="container mt-4">
-      <h1>Inventory Alert System</h1>
-      
-      {/* Tab Navigation */}
-      <div className="tabs" style={{ marginBottom: '20px' }}>
-        <button 
-          onClick={() => setActiveTab('categories')}
-          style={{ 
-            padding: '10px 20px', 
-            marginRight: '10px',
-            backgroundColor: activeTab === 'categories' ? '#007bff' : '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px'
-          }}
-        >
-          Categories
-        </button>
-        <button 
-          onClick={() => setActiveTab('products')}
-          style={{ 
-            padding: '10px 20px',
-            backgroundColor: activeTab === 'products' ? '#007bff' : '#6c757d', 
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px'
-          }}
-        >
-          Products
-        </button>
+    <div className="max-w-5xl mx-auto px-4 py-6">
+      {/* Centered page title */}
+      <h1 className="text-3xl font-semibold text-center mb-2">
+        Inventory Alert System
+      </h1>
+      <p className="text-center text-gray-500 mb-6">
+        Manage your categories and products
+      </p>
+
+      {/* Centered tabs */}
+      <div className="flex justify-center mb-8">
+        <div className="inline-flex gap-3">
+          <button
+            type="button"
+            className={`${baseTab} ${activeTab === 'categories' ? active : inactive}`}
+            onClick={() => setActiveTab('categories')}
+          >
+            Categories
+          </button>
+          <button
+            type="button"
+            className={`${baseTab} ${activeTab === 'products' ? active : inactive}`}
+            onClick={() => setActiveTab('products')}
+          >
+            Products
+          </button>
+        </div>
       </div>
 
-      {/* Tab Content */}
-      {activeTab === 'categories' && <CategoryManager />}
-      {activeTab === 'products' && <ProductManager />}
+      {/* Tab content */}
+      {activeTab === 'categories' ? <CategoryManager /> : <ProductManager />}
     </div>
   );
-};
-
-export default InventoryDashboard;
+}
