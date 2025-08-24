@@ -1,18 +1,52 @@
-**Task Manager Application Overview:The task manager application is designed to help users efficiently manage their tasks and responsibilities by providing a user-friendly interface for creating, viewing, updating, and deleting tasks. It includes essential features such as secure user authentication, allowing individuals to sign up and log in to their accounts, as well as profile management to update personal information. With built-in validation such as input field validation and email validation, the application ensures a seamless user experience while enhancing productivity and organization in both personal and professional settings. **
+Inventory Reorder Alert System
 
-**This apps **contain** the following features:**
+A full-stack MERN app that helps small teams track inventory, organize products by category, and keep stock levels in a healthy range. It includes secure authentication (JWT), profile management, and CRUD for Categories and Products with simple reorder heuristics (low-stock flags).
 
-* Signup
-* Login
-* Logout
-* Update profile
-* Add tasks
-* View tasks
-* Update tasks
-* Delete tasks
+This project evolved from an earlier “Task Manager” tutorial; the codebase has been adapted to inventory concepts (Inventory, Category, Product) while keeping the same authentication, profile and CRUD foundations.
 
-**This **app**lication** is**almost **a** precompiled** app**. However, students will develop some features,**such as adding tasks, viewing tasks, updating tasks, and **deleting** tasks**. **Students** will interact with GitHub when they develop the features.**
+Features
 
+Auth
+
+Sign up, Login, Logout (JWT)
+
+Protected routes (frontend & backend)
+
+Profile page with prefill (name, email) and update
+
+Inventory
+
+Categories: create, list, update, delete
+
+Products: create, list, update, delete
+
+Product → Category relation (select from existing categories)
+
+Inventory fields (currentStock, min/maxStockLevel, reorderQuantity, cost/selling price, supplier info)
+
+Low-stock virtual flags & suggested reorder quantity
+
+UI
+
+Dashboard with tabs: Categories / Products
+
+Clean form labels, validation messages, simple error banners
+
+Quality of life
+
+Axios instance with auth header injection
+
+Environment-based Mongo connection
+
+Concurrent start script to run frontend & backend together
+
+Tech Stack
+
+Frontend: React (CRA), React Router v6, Axios, Tailwind-ish utility classes (plain CSS ok)
+
+Backend: Node.js, Express, Mongoose (MongoDB), JSON Web Tokens
+
+DB: MongoDB Atlas (or local Mongo)
 ---
 
 **Prerequisite:** Please install the following software and create account in following web tools** **
@@ -24,3 +58,44 @@
 * **GitHub Account** [[https://github.com/signup?source=login](https://github.com/signup?source=login)]** **
 
 ---
+inventory-reorder-alert-system/
+├── backend/
+│   ├── config/
+│   │   └── db.js
+│   ├── controllers/
+│   │   ├── authController.js
+│   │   ├── categoryController.js
+│   │   └── productController.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   ├── models/
+│   │   ├── Category.js
+│   │   ├── Product.js
+│   │   └── User.js
+│   ├── routes/
+│   │   ├── authRoutes.js
+│   │   ├── categoryRoutes.js
+│   │   └── productRoutes.js
+│   ├── server.js
+│   └── .env (ignored)
+├── frontend/
+│   └── src/
+│       ├── components/
+│       │   ├── CategoryForm.jsx
+│       │   ├── CategoryList.jsx
+│       │   ├── ProductForm.jsx
+│       │   └── ProductList.jsx
+│       ├── context/AuthContext.js
+│       ├── pages/
+│       │   ├── Login.jsx
+│       │   ├── Register.jsx
+│       │   ├── Profile.jsx
+│       │   └── inventory/
+│       │       ├── InventoryDashboard.jsx
+│       │       ├── CategoryManager.jsx
+│       │       └── ProductManager.jsx
+│       ├── App.js
+│       ├── RequireAuth.jsx
+│       └── axiosConfig.jsx
+├── package.json (root; concurrent start)
+└── README.md
