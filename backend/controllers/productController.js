@@ -1,12 +1,16 @@
 // backend/controllers/productController.js
 const Product = require('../models/Product');
 
-// GET /api/products → Get all products for logged-in user
+// GET /api/products → Get active products for logged-in user
 const getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ createdBy: req.user.id })
+    const products = await Product.find({
+      createdBy: req.user.id,
+      isActive: true           // ← hide soft-deleted ones
+    })
       .populate('category', 'name description')
       .populate('createdBy', 'username email');
+
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

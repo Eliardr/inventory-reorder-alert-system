@@ -1,9 +1,16 @@
+// frontend/src/axiosConfig.js
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5001', // local
-  //baseURL: 'http://3.26.96.188:5001', // live
+  baseURL: 'http://localhost:5001', // keep local base
   headers: { 'Content-Type': 'application/json' },
+});
+
+// ⬇️ attach token to every request
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
 });
 
 export default axiosInstance;
